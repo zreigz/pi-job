@@ -11,9 +11,6 @@ spec:
     singular: problem
   scope: Namespaced
   versions:
-    - name: v1alpha2
-      served: true
-      storage: false
     - name: v1alpha3
       served: true
       storage: true
