@@ -13,6 +13,20 @@ spec:
     path: /abc/does-not-exist  # ❌ This directory likely doesn't exist on the node
 ---
 apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: lonely-pv
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: unmatched-class  # ❌ No PVC will request this storage class
+  hostPath:
+    path: /mnt/never-used
+---
+apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: fake-pvc
