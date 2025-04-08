@@ -8,9 +8,9 @@ spec:
   accessModes:
     - ReadWriteOnce
   persistentVolumeReclaimPolicy: Retain
-  storageClassName: nonexistent-storageclass
+  storageClassName: "my-storage-class"
   hostPath:
-    path: /mnt/does-not-exist  # ❌ This directory likely doesn't exist on the node
+    path: /abc/does-not-exist  # ❌ This directory likely doesn't exist on the node
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -22,7 +22,7 @@ spec:
   resources:
     requests:
       storage: 5Gi
-  storageClassName: nonexistent-storageclass
+  storageClassName: "my-storage-class"
 ---
 
 apiVersion: v1
