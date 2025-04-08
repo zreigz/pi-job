@@ -1,0 +1,44 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: misleading-pv
+spec:
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: nonexistent-storageclass
+  hostPath:
+    path: /mnt/does-not-exist  # ❌ This directory likely doesn't exist on the node
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: fake-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+  storageClassName: nonexistent-storageclass
+---
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: test-pod
+spec:
+  volumes:
+    - name: test-volume
+      persistentVolumeClaim:
+        claimName: fake-pvc
+  containers:
+    - name: test-container
+      image: busybox
+      command: [ "sh", "-c", "sleep 3600" ]
+      volumeMounts:
+        - mountPath: /data
+          name: test-volume
+
